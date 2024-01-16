@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <title>Linear Acceleration Visualization</title>
+      <style>
+         body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+         }
+         #acceleration {
+            margin-top: 20px;
+         }
+         .bar {
+            width: 30px;
+            height: 100px;
+            margin: 10px;
+            display: inline-block;
+            background-color: lightgray;
+            transition: all 0.2s ease;
+         }
+         .bar-value {
+            height: 100%;
+            background-color: blue;
+            transition: all 0.2s ease;
+         }
+      </style>
+   </head>
+   <body>
+      <h1>Current Linear Acceleration</h1>
+      <div id="acceleration">
+         <div class="bar">
+            <div id="x-bar" class="bar-value"></div>
+         </div>
+         <div class="bar">
+            <div id="y-bar" class="bar-value"></div>
+         </div>
+         <div class="bar">
+            <div id="z-bar" class="bar-value"></div>
+         </div>
+      </div>
+      <script>
+         function updateBar(barId, value) {
+             const barElement = document.getElementById(barId);
+             const MAX_VALUE = 10; // Maximum expected acceleration value
+             let normalizedValue = value / MAX_VALUE; // Normalize the value between -1 and 1
+         
+             // Ensure the value stays within the -1 to 1 range
+             normalizedValue = Math.max(Math.min(normalizedValue, 1), -1);
+         
+             // Adjust the bar's height and position based on the normalized value
+             const height = Math.abs(normalizedValue) * 100 + '%';
+             barElement.style.height = height;
+             barElement.style.bottom = normalizedValue >= 0 ? '50%' : 'auto';
+             barElement.style.top = normalizedValue >= 0 ? 'auto' : '50%';
+         
+             // Change color based on positive (green) or negative (red) value
+             barElement.style.backgroundColor = normalizedValue >= 0 ? 'green' : 'red';
+         }
+         
+         if (window.DeviceMotionEvent) {
+                 window.addEventListener('devicemotion', function(event) {
+                     const x = event.acceleration.x;
+                     const y = event.acceleration.y;
+                     const z = event.acceleration.z;
+         
+                     // Update the bars based on the acceleration data
+                     updateBar('x-bar', x);
+                     updateBar('y-bar', y);
+                     updateBar('z-bar', z);
+                 }, true);
+             } else {
+                 document.getElementById('acceleration').innerHTML = 
+                     'DeviceMotionEvent is not supported by your device.';
+             }
+
+      </script>
+   </body>
+</html>
