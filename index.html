@@ -23,7 +23,11 @@
             background-color: blue;
             transition: all 0.2s ease;
          }
+         #speed {
+            margin-top: 50px;
+         }
       </style>
+      <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
       <h1>Current Linear Acceleration</h1>
@@ -38,7 +42,16 @@
             <div id="z-bar" class="bar-value"></div>
          </div>
       </div>
+      <div id="speed">
+         <h2>Current Speed: <span id="speed-value">0</span> m/s</h2>
+      </div>
       <script>
+         let previousTimestamp = null;
+         let speed = 0;
+         let previousAcceleration = { x: 0, y: 0, z: 0 };
+         let kalmanFilter = new KalmanFilter({R: 0.01, Q: 3});
+
+         
          function updateBar(barId, value) {
              const barElement = document.getElementById(barId);
              const MAX_VALUE = 10; // Maximum expected acceleration value
@@ -56,23 +69,48 @@
              // Change color based on positive (green) or negative (red) value
              barElement.style.backgroundColor = normalizedValue >= 0 ? 'green' : 'red';
          }
-         
-         if (window.DeviceMotionEvent) {
-                 window.addEventListener('devicemotion', function(event) {
-                     const x = event.acceleration.x;
-                     const y = event.acceleration.y;
-                     const z = event.acceleration.z;
-         
-                     // Update the bars based on the acceleration data
-                     updateBar('x-bar', x);
-                     updateBar('y-bar', y);
-                     updateBar('z-bar', z);
-                 }, true);
-             } else {
-                 document.getElementById('acceleration').innerHTML = 
-                     'DeviceMotionEvent is not supported by your device.';
-             }
 
+
+
+         function updateSpeed(acceleration, timestamp) {
+    if (previousTimestamp !== null) {
+        const deltaTime = (timestamp - previousTimestamp) / 1000;
+        const deltaSpeed = Math.abs(acceleration.z) * deltaTime;
+
+        // Check if the direction of acceleration has changed
+        const directionChanged = (acceleration.z >= 0) !== (previousAcceleration.z >= 0);
+
+        // If the direction has changed, subtract the change in speed from the current speed
+        if (directionChanged) {
+            speed -= deltaSpeed;
+        } else {
+            speed += deltaSpeed;
+        }
+
+        // Ensure the speed does not go below 0
+        speed = Math.max(speed, 0);
+    }
+
+    previousTimestamp = timestamp;
+    previousAcceleration.z = acceleration.z;
+    document.getElementById('speed-value').textContent = speed.toFixed(2);
+}
+
+if (window.DeviceMotionEvent) {
+    window.addEventListener('devicemotion', function(event) {
+        let rawAcceleration = { z: event.acceleration.z };
+        let filteredAcceleration = {
+            z: kalmanFilter.filter(rawAcceleration.z)
+        };
+        updateBar('z-bar', filteredAcceleration.z);
+        updateSpeed(filteredAcceleration, event.timeStamp);
+    }, true);
+} else {
+    document.getElementById('acceleration').innerHTML = 
+        'DeviceMotionEvent is not supported by your device.';
+}
+         
+        
       </script>
    </body>
 </html>
