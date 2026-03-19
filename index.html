@@ -6,6 +6,50 @@
          body {
             font-family: Arial, sans-serif;
             text-align: center;
+            margin: 0;
+            padding: 0;
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.3s ease, color 0.3s ease;
+         }
+         body.dark {
+            background-color: #1a1a1a;
+            color: #ffffff;
+         }
+         .navbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 20px;
+            background-color: #f0f0f0;
+            transition: background-color 0.3s ease;
+         }
+         body.dark .navbar {
+            background-color: #333333;
+         }
+         .navbar-title {
+            font-weight: bold;
+            font-size: 18px;
+         }
+         .dark-toggle {
+            padding: 8px 16px;
+            cursor: pointer;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 14px;
+            transition: background-color 0.3s ease;
+         }
+         .dark-toggle:hover {
+            background-color: #0056b3;
+         }
+         body.dark .dark-toggle {
+            background-color: #ffc107;
+            color: #000000;
+         }
+         body.dark .dark-toggle:hover {
+            background-color: #e0a800;
          }
          #acceleration {
             margin-top: 20px;
@@ -30,6 +74,10 @@
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
+      <nav class="navbar">
+         <span class="navbar-title">Accelerometer Music</span>
+         <button class="dark-toggle" onclick="toggleDarkMode()">Dark Mode</button>
+      </nav>
       <h1>Current Linear Acceleration</h1>
       <div id="acceleration">
          <div class="bar">
@@ -94,6 +142,16 @@
     previousTimestamp = timestamp;
     previousAcceleration.z = acceleration.z;
     document.getElementById('speed-value').textContent = speed.toFixed(2);
+}
+
+function toggleDarkMode() {
+   document.body.classList.toggle('dark');
+   const btn = document.querySelector('.dark-toggle');
+   if (document.body.classList.contains('dark')) {
+      btn.textContent = 'Light Mode';
+   } else {
+      btn.textContent = 'Dark Mode';
+   }
 }
 
 if (window.DeviceMotionEvent) {
