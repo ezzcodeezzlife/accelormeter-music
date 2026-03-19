@@ -2,34 +2,65 @@
 <html>
    <head>
       <title>Linear Acceleration Visualization</title>
-      <style>
-         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-         }
-         #acceleration {
-            margin-top: 20px;
-         }
-         .bar {
-            width: 30px;
-            height: 100px;
-            margin: 10px;
-            display: inline-block;
-            background-color: lightgray;
-            transition: all 0.2s ease;
-         }
-         .bar-value {
-            height: 100%;
-            background-color: blue;
-            transition: all 0.2s ease;
-         }
-         #speed {
-            margin-top: 50px;
-         }
-      </style>
+       <style>
+          body {
+             font-family: Arial, sans-serif;
+             text-align: center;
+             background-color: #ffffff;
+             color: #333333;
+             transition: all 0.3s ease;
+          }
+          body.dark-mode {
+             background-color: #1a1a1a;
+             color: #e0e0e0;
+          }
+          #acceleration {
+             margin-top: 20px;
+          }
+          .bar {
+             width: 30px;
+             height: 100px;
+             margin: 10px;
+             display: inline-block;
+             background-color: #cccccc;
+             transition: all 0.2s ease;
+          }
+          body.dark-mode .bar {
+             background-color: #444444;
+          }
+          .bar-value {
+             height: 100%;
+             background-color: blue;
+             transition: all 0.2s ease;
+          }
+          body.dark-mode .bar-value {
+             background-color: #4da6ff;
+          }
+          #speed {
+             margin-top: 50px;
+          }
+          #dark-mode-toggle {
+             position: absolute;
+             top: 20px;
+             right: 20px;
+             padding: 10px 20px;
+             cursor: pointer;
+             background-color: #333333;
+             color: #ffffff;
+             border: none;
+             border-radius: 5px;
+             font-size: 14px;
+             transition: all 0.3s ease;
+          }
+          body.dark-mode #dark-mode-toggle {
+             background-color: #e0e0e0;
+             color: #333333;
+          }
+       </style>
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
+      <button id="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
       <h1>Current Linear Acceleration</h1>
       <div id="acceleration">
          <div class="bar">
@@ -45,8 +76,26 @@
       <div id="speed">
          <h2>Current Speed: <span id="speed-value">0</span> m/s</h2>
       </div>
-      <script>
-         let previousTimestamp = null;
+       <script>
+          function toggleDarkMode() {
+             const body = document.body;
+             const button = document.getElementById('dark-mode-toggle');
+             body.classList.toggle('dark-mode');
+             if (body.classList.contains('dark-mode')) {
+                button.textContent = 'Light Mode';
+                localStorage.setItem('darkMode', 'enabled');
+             } else {
+                button.textContent = 'Dark Mode';
+                localStorage.setItem('darkMode', 'disabled');
+             }
+          }
+
+          if (localStorage.getItem('darkMode') === 'enabled') {
+             document.body.classList.add('dark-mode');
+             document.getElementById('dark-mode-toggle').textContent = 'Light Mode';
+          }
+
+          let previousTimestamp = null;
          let speed = 0;
          let previousAcceleration = { x: 0, y: 0, z: 0 };
          let kalmanFilter = new KalmanFilter({R: 0.01, Q: 3});
