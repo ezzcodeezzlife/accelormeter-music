@@ -2,31 +2,39 @@
 <html>
    <head>
       <title>Linear Acceleration Visualization</title>
-      <style>
-         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-         }
-         #acceleration {
-            margin-top: 20px;
-         }
-         .bar {
-            width: 30px;
-            height: 100px;
-            margin: 10px;
-            display: inline-block;
-            background-color: lightgray;
-            transition: all 0.2s ease;
-         }
-         .bar-value {
-            height: 100%;
-            background-color: blue;
-            transition: all 0.2s ease;
-         }
-         #speed {
-            margin-top: 50px;
-         }
-      </style>
+       <style>
+          body {
+             font-family: Arial, sans-serif;
+             display: flex;
+             flex-direction: column;
+             align-items: center;
+             justify-content: center;
+             min-height: 100vh;
+             margin: 0;
+          }
+          #acceleration {
+             margin-top: 20px;
+             display: flex;
+             justify-content: center;
+             gap: 10px;
+          }
+          .bar {
+             width: 30px;
+             height: 100px;
+             background-color: lightgray;
+             transition: all 0.2s ease;
+             position: relative;
+          }
+          .bar-value {
+             position: absolute;
+             width: 100%;
+             background-color: blue;
+             transition: all 0.2s ease;
+          }
+          #speed {
+             margin-top: 50px;
+          }
+       </style>
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
