@@ -1,11 +1,18 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Linear Acceleration Visualization</title>
+      <title>prototype - Linear Acceleration Visualization</title>
       <style>
          body {
             font-family: Arial, sans-serif;
             text-align: center;
+            background-color: #ffffff;
+            color: #000000;
+            transition: background-color 0.3s, color 0.3s;
+         }
+         body.dark-mode {
+            background-color: #1a1a1a;
+            color: #ffffff;
          }
          #acceleration {
             margin-top: 20px;
@@ -26,10 +33,27 @@
          #speed {
             margin-top: 50px;
          }
+         #dark-mode-toggle {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            padding: 8px 16px;
+            cursor: pointer;
+            border: none;
+            border-radius: 4px;
+            background-color: #f0f0f0;
+            color: #000000;
+            transition: background-color 0.3s, color 0.3s;
+         }
+         body.dark-mode #dark-mode-toggle {
+            background-color: #333333;
+            color: #ffffff;
+         }
       </style>
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
+      <button id="dark-mode-toggle" onclick="toggleDarkMode()">Dark Mode</button>
       <h1>Current Linear Acceleration</h1>
       <div id="acceleration">
          <div class="bar">
@@ -93,7 +117,17 @@
 
     previousTimestamp = timestamp;
     previousAcceleration.z = acceleration.z;
-    document.getElementById('speed-value').textContent = speed.toFixed(2);
+         document.getElementById('speed-value').textContent = speed.toFixed(2);
+}
+
+function toggleDarkMode() {
+    document.body.classList.toggle('dark-mode');
+    const btn = document.getElementById('dark-mode-toggle');
+    if (document.body.classList.contains('dark-mode')) {
+        btn.textContent = 'Light Mode';
+    } else {
+        btn.textContent = 'Dark Mode';
+    }
 }
 
 if (window.DeviceMotionEvent) {
