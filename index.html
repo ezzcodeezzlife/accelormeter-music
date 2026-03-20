@@ -1,8 +1,9 @@
 <!DOCTYPE html>
 <html>
    <head>
-      <title>Linear Acceleration Visualization</title>
-      <style>
+       <title>Linear Acceleration Visualization</title>
+       <meta name="description" content="Visualize real-time linear acceleration data from your device's accelerometer">
+       <style>
          body {
             font-family: Arial, sans-serif;
             text-align: center;
@@ -30,8 +31,9 @@
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
-      <h1>Current Linear Acceleration</h1>
-      <div id="acceleration">
+       <h1>Current Linear Acceleration</h1>
+       <p>Move your device to see real-time acceleration values in the X, Y, and Z axes. The bars update dynamically to show the current linear acceleration.</p>
+       <div id="acceleration">
          <div class="bar">
             <div id="x-bar" class="bar-value"></div>
          </div>
