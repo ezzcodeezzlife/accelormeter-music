@@ -2,34 +2,54 @@
 <html>
    <head>
       <title>Linear Acceleration Visualization</title>
-      <style>
-         body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-         }
-         #acceleration {
-            margin-top: 20px;
-         }
-         .bar {
-            width: 30px;
-            height: 100px;
-            margin: 10px;
-            display: inline-block;
-            background-color: lightgray;
-            transition: all 0.2s ease;
-         }
-         .bar-value {
-            height: 100%;
-            background-color: blue;
-            transition: all 0.2s ease;
-         }
-         #speed {
-            margin-top: 50px;
-         }
-      </style>
+   <style>
+      :root {
+         --bg-color: #ffffff;
+         --text-color: #333333;
+         --bar-bg: lightgray;
+         --bar-positive: green;
+         --bar-negative: red;
+      }
+      body {
+         font-family: Arial, sans-serif;
+         text-align: center;
+         background-color: var(--bg-color);
+         color: var(--text-color);
+      }
+      .dark-mode {
+         --bg-color: #1a1a1a;
+         --text-color: #f0f0f0;
+         --bar-bg: #444444;
+      }
+      #acceleration {
+         margin-top: 20px;
+      }
+      .bar {
+         width: 30px;
+         height: 100px;
+         margin: 10px;
+         display: inline-block;
+         background-color: var(--bar-bg);
+         transition: all 0.2s ease;
+      }
+      .bar-value {
+         height: 100%;
+         background-color: var(--bar-positive);
+         transition: all 0.2s ease;
+      }
+      #speed {
+         margin-top: 50px;
+      }
+      #theme-toggle {
+         margin: 20px;
+         padding: 10px 20px;
+         cursor: pointer;
+      }
+   </style>
       <script src="https://unpkg.com/kalmanjs"></script>
    </head>
    <body>
+      <button id="theme-toggle">Dark Mode</button>
       <h1>Current Linear Acceleration</h1>
       <div id="acceleration">
          <div class="bar">
@@ -49,26 +69,30 @@
          let previousTimestamp = null;
          let speed = 0;
          let previousAcceleration = { x: 0, y: 0, z: 0 };
-         let kalmanFilter = new KalmanFilter({R: 0.01, Q: 3});
+      let kalmanFilter = new KalmanFilter({R: 0.01, Q: 3});
 
-         
-         function updateBar(barId, value) {
-             const barElement = document.getElementById(barId);
-             const MAX_VALUE = 10; // Maximum expected acceleration value
-             let normalizedValue = value / MAX_VALUE; // Normalize the value between -1 and 1
-         
-             // Ensure the value stays within the -1 to 1 range
-             normalizedValue = Math.max(Math.min(normalizedValue, 1), -1);
-         
-             // Adjust the bar's height and position based on the normalized value
-             const height = Math.abs(normalizedValue) * 100 + '%';
-             barElement.style.height = height;
-             barElement.style.bottom = normalizedValue >= 0 ? '50%' : 'auto';
-             barElement.style.top = normalizedValue >= 0 ? 'auto' : '50%';
-         
-             // Change color based on positive (green) or negative (red) value
-             barElement.style.backgroundColor = normalizedValue >= 0 ? 'green' : 'red';
-         }
+          const themeToggle = document.getElementById('theme-toggle');
+          themeToggle.addEventListener('click', () => {
+             document.body.classList.toggle('dark-mode');
+             themeToggle.textContent = document.body.classList.contains('dark-mode') ? 'Light Mode' : 'Dark Mode';
+          });
+          
+          function updateBar(barId, value) {
+              const barElement = document.getElementById(barId);
+              const MAX_VALUE = 10;
+              let normalizedValue = value / MAX_VALUE;
+              normalizedValue = Math.max(Math.min(normalizedValue, 1), -1);
+          
+              const height = Math.abs(normalizedValue) * 100 + '%';
+              barElement.style.height = height;
+              barElement.style.bottom = normalizedValue >= 0 ? '50%' : 'auto';
+              barElement.style.top = normalizedValue >= 0 ? 'auto' : '50%';
+          
+              const style = getComputedStyle(document.body);
+              const positiveColor = style.getPropertyValue('--bar-positive').trim() || 'green';
+              const negativeColor = style.getPropertyValue('--bar-negative').trim() || 'red';
+              barElement.style.backgroundColor = normalizedValue >= 0 ? positiveColor : negativeColor;
+          }
 
 
 
