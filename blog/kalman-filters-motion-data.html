@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Using Kalman Filters for Smoother Motion Data - Accelerometer Music Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        .article-meta {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Using Kalman Filters for Smoother Motion Data</h1>
+    <p class="article-meta">Published: March 2024</p>
+    
+    <h2>The Problem with Raw Sensor Data</h2>
+    <p>When working with accelerometers, you'll notice that the raw data can be quite noisy. Even when the device is perfectly still, the readings fluctuate. This noise comes from various sources: electrical interference, mechanical vibrations, and the inherent limitations of MEMS sensors.</p>
+    
+    <h2>What is a Kalman Filter?</h2>
+    <p>The Kalman filter is an algorithm that uses a series of measurements observed over time to estimate unknown variables more accurately than using a single measurement alone. It was developed by Rudolf Kalman in 1960 and has been widely used in navigation, robotics, and signal processing.</p>
+    
+    <h2>How It Works</h2>
+    <p>The Kalman filter works in two main steps:</p>
+    <ol>
+        <li><strong>Prediction:</strong> Based on the previous state, predict what the next measurement should be</li>
+        <li><strong>Update:</strong> Combine the prediction with the actual measurement, weighting each based on their uncertainty</li>
+    </ol>
+    
+    <h2>Key Parameters</h2>
+    <p>Our implementation uses two important parameters:</p>
+    <ul>
+        <li><strong>R (Measurement Noise Covariance):</strong> Represents how much we trust the measurement. Lower values mean we trust the sensor more.</li>
+        <li><strong>Q (Process Noise Covariance):</strong> Represents how much we expect the value to change between measurements. Higher values allow for more responsiveness.</li>
+    </ul>
+    
+    <h2>In Our Application</h2>
+    <p>We use the kalmanjs library with R=0.01 and Q=3 to filter the raw Z-axis acceleration before calculating speed. This results in much smoother visualizations and more accurate speed calculations.</p>
+    
+    <h2>Conclusion</h2>
+    <p>Kalman filtering is a powerful technique for dealing with noisy sensor data. While the mathematics can be complex, libraries like kalmanjs make it easy to integrate into web applications.</p>
+    
+    <a href="index.html" class="back-link">&larr; Back to Blog</a>
+</body>
+</html>

@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Understanding Accelerometers - Accelerometer Music Blog</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+            line-height: 1.6;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #555;
+        }
+        .article-meta {
+            color: #888;
+            font-size: 0.9em;
+            margin-bottom: 20px;
+        }
+        .back-link {
+            display: inline-block;
+            margin-top: 30px;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+    <h1>Understanding Accelerometers: A Beginner's Guide</h1>
+    <p class="article-meta">Published: March 2024</p>
+    
+    <h2>What is an Accelerometer?</h2>
+    <p>An accelerometer is a device that measures the acceleration forces acting on an object. It detects changes in velocity and orientation, making it possible to determine how an object is moving through space.</p>
+    
+    <h2>How Do Accelerometers Work?</h2>
+    <p>Most modern accelerometers use microelectromechanical systems (MEMS) technology. These tiny sensors contain microscopic structures that move when subjected to acceleration forces. This movement is converted into electrical signals that can be processed by a computer.</p>
+    
+    <h2>Three-Axis Acceleration</h2>
+    <p>Modern accelerometers measure acceleration along three axes:</p>
+    <ul>
+        <li><strong>X-axis:</strong> Left/right movement</li>
+        <li><strong>Y-axis:</strong> Forward/backward movement</li>
+        <li><strong>Z-axis:</strong> Up/down movement (including gravity)</li>
+    </ul>
+    
+    <h2>Applications in Modern Devices</h2>
+    <p>Accelerometers are everywhere! They're in your smartphone (screen rotation), fitness trackers (step counting), game controllers, and even in cars (airbag sensors). Our project demonstrates how you can access this data directly in a web browser using the DeviceMotion API.</p>
+    
+    <h2>Understanding the Data</h2>
+    <p>Acceleration is measured in meters per second squared (m/s²). When the device is at rest, you'll still see readings due to gravity (approximately 9.8 m/s² on the Z-axis). Our visualization normalizes these values to make them easier to interpret visually.</p>
+    
+    <a href="index.html" class="back-link">&larr; Back to Blog</a>
+</body>
+</html>
